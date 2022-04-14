@@ -104,7 +104,7 @@ class IntrospectionService
 	 */
 	protected function getRegistry(): array
 	{
-		$prop = (new ReflectionClass(Container::class))->getProperty('registry');
+		$prop = (new ReflectionClass(Container::class))->getProperty('instances');
 		$prop->setAccessible(true);
 
 		return $prop->getValue($this->container);

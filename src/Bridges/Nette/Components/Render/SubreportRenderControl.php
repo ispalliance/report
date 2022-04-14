@@ -30,7 +30,6 @@ class SubreportRenderControl extends Control
 
 	public function __construct(Subreport $subreport)
 	{
-		parent::__construct();
 		$this->subreport = $subreport;
 	}
 

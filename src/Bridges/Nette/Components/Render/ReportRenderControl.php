@@ -18,7 +18,6 @@ class ReportRenderControl extends Control
 
 	public function __construct(Report $report)
 	{
-		parent::__construct();
 		$this->report = $report;
 	}
 
