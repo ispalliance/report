@@ -453,7 +453,7 @@ class ReportExtension extends CompilerExtension
 		$datasourceDef = $builder->addDefinition($this->prefix('subreports.' . $name . '.datasource'));
 //		Compiler::loadDefinition($datasourceDef, $subreport['datasource']);
 		$datasourceDef->setFactory($subreport['datasource']['factory'], $subreport['datasource']['arguments'] ?? []);
-		$datasourceDef->setSetup($subreport['datasource']['setup']);
+		$datasourceDef->setSetup($subreport['datasource']['setup'] ?? []);
 		$datasourceDef->setAutowired(false);
 		$datasourceDef->addTag(self::TAG_SUBREPORT_DATASOURCE, $this->prefix('subreports.' . $name));
 
@@ -461,7 +461,7 @@ class ReportExtension extends CompilerExtension
 		$rendererDef = $builder->addDefinition($this->prefix('subreports.' . $name . '.renderer'));
 //		Compiler::loadDefinition($rendererDef, $subreport['renderer']);
 		$rendererDef->setFactory($subreport['renderer']['factory'], $subreport['renderer']['arguments'] ?? []);
-		$rendererDef->setSetup($subreport['renderer']['setup']);
+		$rendererDef->setSetup($subreport['renderer']['setup'] ?? []);
 		$rendererDef->setAutowired(false);
 		$rendererDef->addTag(self::TAG_SUBREPORT_RENDERER, $this->prefix('subreports.' . $name));
 
@@ -490,7 +490,12 @@ class ReportExtension extends CompilerExtension
 				$pname = $column . '_' . $key;
 				$preprocessorDef = $builder->addDefinition($this->prefix('subreports.' . $name . '.preprocessor.' . $pname));
 //				Compiler::loadDefinition($preprocessorDef, $preprocessor);
-				$preprocessorDef->setFactory($preprocessor);
+				if (is_array($preprocessor)) {
+					$preprocessorDef->setFactory($preprocessor['class'], $preprocessor['arguments'] ?? []);
+					$preprocessorDef->setSetup($preprocessor['setup'] ?? []);
+				} else {
+					$preprocessorDef->setFactory($preprocessor);
+				}
 				$subreportDef->addSetup('addPreprocessor', [$column, $preprocessorDef]);
 			}
 		}
